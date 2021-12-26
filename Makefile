@@ -8,7 +8,7 @@ PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
 PROJECT_NAME = wordle-solver
-PYTHON = python3
+PYTHON = python3.7
 VENV = .venv_wordle_solver
 PYTHON_INTERPRETER = $(VENV)/bin/python3
 
@@ -23,11 +23,16 @@ endif
 #################################################################################
 venv:
 	rm -rf $(VENV)
-	$(PYTHON) -m venv $(VENV) python=3.8
+	$(PYTHON) -m venv $(VENV)
+	$(PYTHON_INTERPRETER) -m pip install --upgrade pip
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 update_venv:
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
+
+update_reqfile:
+	printf "# local package\n -e .\n\n#external requirements\n" > requirements.txt
+	pip list --format=freeze | grep -v "pip==" >> requirements.txt
 
 ## Install Python Dependencies
 requirements: test_environment
