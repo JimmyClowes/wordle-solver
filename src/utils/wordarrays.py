@@ -1,7 +1,5 @@
 import numpy as np
 import string
-from collections import Counter
-from math import log
 
 alphabet = string.ascii_lowercase
 
@@ -45,15 +43,10 @@ def binary_encode_cross_check(cross_check_output):
     return(diag_rowmax_bin_encode)
 
 
-def calc_entropy(diag_rowmax_bin_encode, element, log_base=2):
+def calc_entropy(check):
 
-    # Determine number of possible remaining words
-    num_poss_remaining = len(diag_rowmax_bin_encode[element])
+    counts = np.unique(check, return_counts=True)[1]
 
-    # Count frequency of each binary encoded outcome
-    counts = Counter(diag_rowmax_bin_encode[element])
-
-    # Calculate expected entropy
-    entropy = sum([(tup[1]/num_poss_remaining) * log(1/tup[1],log_base) for tup in list(counts.items())])
+    entropy = (counts/(counts.sum()) * np.log2(1/counts)).sum()
 
     return(entropy)
