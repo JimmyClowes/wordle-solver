@@ -40,6 +40,8 @@ def binary_encode_cross_check(cross_check_output):
     # encode 10 element boolean arrays as binary numbers
     diag_rowmax_bin_encode = np.matmul(diag_rowmax, np.array([2**i for i in range(9, -1, -1)]))
 
+    diag_rowmax_bin_encode = diag_rowmax_bin_encode.astype('>i2')
+
     return(diag_rowmax_bin_encode)
 
 
